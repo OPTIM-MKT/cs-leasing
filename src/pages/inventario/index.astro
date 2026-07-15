@@ -1,0 +1,300 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import InventoryFilters from "@/components/inventario/InventoryFilters.astro";
+import SidebarFilters from "@/components/inventario/SidebarFilters.astro";
+import InventoryGrid from "@/components/inventario/InventoryGrid.astro";
+import { whatsappLink } from "@/lib/site";
+
+const vehicles = await getCollection("vehicles");
+
+// Default order matches the "Destacados" sort option (SSR === client default).
+vehicles.sort((a, b) => {
+  const d = Number(b.data.destacado) - Number(a.data.destacado);
+  return d !== 0 ? d : a.data.precio - b.data.precio;
+});
+
+// Filter options derived from the data — never hardcoded.
+const marcas = [...new Set(vehicles.map((v) => v.data.marca))].sort();
+const transmisiones = [...new Set(vehicles.map((v) => v.data.transmision))];
+const combustibles = [...new Set(vehicles.map((v) => v.data.combustible))];
+
+const precios = vehicles.map((v) => v.data.precio);
+const precioMin = Math.floor(Math.min(...precios) / 10000) * 10000;
+const precioMax = Math.ceil(Math.max(...precios) / 10000) * 10000;
+
+const filterProps = {
+  marcas,
+  transmisiones,
+  combustibles,
+  precioMin,
+  precioMax,
+};
+
+const wa = whatsappLink("Hola, me interesa un vehículo de su inventario.");
+---
+
+<Layout
+  title="Inventario — C&S Leasing"
+  description="Explora nuestro inventario de vehículos seminuevos premium. Filtra por marca, transmisión, combustible y precio."
+>
+  <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+        Inventario
+      </h1>
+      <p class="mt-2 text-muted-foreground">
+        Unidades seleccionadas, verificadas y listas para entrega.
+      </p>
+    </header>
+
+    <div class="mb-6">
+      <InventoryFilters total={vehicles.length} />
+    </div>
+
+    <div class="lg:grid lg:grid-cols-[16rem_1fr] lg:gap-8">
+      <!-- Desktop fixed sidebar -->
+      <aside class="hidden lg:block">
+        <div class="sticky top-20">
+          <SidebarFilters {...filterProps} scope="desktop" />
+        </div>
+      </aside>
+
+      <InventoryGrid vehicles={vehicles} />
+    </div>
+  </section>
+
+  <!-- Mobile filter drawer -->
+  <div id="filters-drawer" hidden class="lg:hidden">
+    <div
+      data-close-drawer
+      class="fixed inset-0 z-50 bg-black/50"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="fixed inset-y-0 left-0 z-50 flex w-80 max-w-[85%] flex-col bg-background"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Filtros"
+    >
+      <div
+        class="flex items-center justify-between border-b border-border px-5 py-4"
+      >
+        <p class="text-base font-semibold">Filtros</p>
+        <button
+          data-close-drawer
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-foreground hover:bg-muted"
+          aria-label="Cerrar filtros"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-5 py-5">
+        <SidebarFilters {...filterProps} scope="mobile" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Persistent floating WhatsApp button (mobile) -->
+  <a
+    href={wa}
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp"
+    class="fixed bottom-5 right-5 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground lg:hidden"
+  >
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"></path>
+    </svg>
+  </a>
+</Layout>
+
+<script>
+  // Inventory controller: search / filter / sort / drawer / details.
+  // Runs on every view-transition page load. Element-level listeners attach to
+  // fresh nodes each time; the single document-level delegate is guarded.
+  const fmt = (n: number) =>
+    new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
+      maximumFractionDigits: 0,
+    }).format(n);
+
+  function initInventory() {
+    const grid = document.getElementById("vehicle-grid");
+    if (!grid) return; // not on the inventory page
+
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-vehicle]"),
+    );
+    const empty = document.getElementById("vehicle-empty");
+    const count = document.getElementById("result-count");
+    const search = document.getElementById("search-input") as HTMLInputElement;
+    const sort = document.getElementById("sort-select") as HTMLSelectElement;
+    const forms = Array.from(
+      document.querySelectorAll<HTMLFormElement>("[data-filters]"),
+    );
+
+    const selectedFor = (group: string) => {
+      const set = new Set<string>();
+      forms.forEach((f) =>
+        f
+          .querySelectorAll<HTMLInputElement>(
+            `input[data-filter="${group}"]:checked`,
+          )
+          .forEach((i) => set.add(i.value)),
+      );
+      return set;
+    };
+
+    const maxPrice = () => {
+      let m = Infinity;
+      forms.forEach((f) => {
+        const r = f.querySelector<HTMLInputElement>(
+          'input[data-filter="precioMax"]',
+        );
+        if (r) m = Math.min(m, Number(r.value));
+      });
+      return m;
+    };
+
+    const num = (el: HTMLElement, k: string) => Number(el.dataset[k]);
+
+    const sortCards = () => {
+      const mode = sort?.value ?? "destacado";
+      [...cards]
+        .sort((a, b) => {
+          switch (mode) {
+            case "precio-asc":
+              return num(a, "precio") - num(b, "precio");
+            case "precio-desc":
+              return num(b, "precio") - num(a, "precio");
+            case "anio-desc":
+              return num(b, "anio") - num(a, "anio");
+            case "km-asc":
+              return num(a, "km") - num(b, "km");
+            default:
+              return (
+                Number(b.dataset.destacado === "true") -
+                Number(a.dataset.destacado === "true")
+              );
+          }
+        })
+        .forEach((c) => grid.appendChild(c));
+    };
+
+    const updatePriceLabels = () => {
+      forms.forEach((f) => {
+        const r = f.querySelector<HTMLInputElement>(
+          'input[data-filter="precioMax"]',
+        );
+        const label = f.querySelector<HTMLElement>("[data-price-label]");
+        if (r && label) label.textContent = fmt(Number(r.value));
+      });
+    };
+
+    const apply = () => {
+      const marca = selectedFor("marca");
+      const trans = selectedFor("transmision");
+      const comb = selectedFor("combustible");
+      const pmax = maxPrice();
+      const q = (search?.value ?? "").trim().toLowerCase();
+
+      let visible = 0;
+      cards.forEach((c) => {
+        const show =
+          (marca.size === 0 || marca.has(c.dataset.marca ?? "")) &&
+          (trans.size === 0 || trans.has(c.dataset.transmision ?? "")) &&
+          (comb.size === 0 || comb.has(c.dataset.combustible ?? "")) &&
+          Number(c.dataset.precio) <= pmax &&
+          (!q || (c.dataset.search ?? "").includes(q));
+        c.hidden = !show;
+        if (show) visible++;
+      });
+
+      if (count) count.textContent = String(visible);
+      if (empty) empty.hidden = visible !== 0;
+      updatePriceLabels();
+      sortCards();
+    };
+
+    // Keep the desktop sidebar and mobile drawer in sync.
+    const mirror = (e: Event) => {
+      const src = e.target as HTMLInputElement;
+      const group = src.getAttribute?.("data-filter");
+      if (!group) return;
+      forms.forEach((f) => {
+        if (f.contains(src)) return;
+        if (src.type === "checkbox") {
+          const twin = f.querySelector<HTMLInputElement>(
+            `input[data-filter="${group}"][value="${CSS.escape(src.value)}"]`,
+          );
+          if (twin) twin.checked = src.checked;
+        } else {
+          const twin = f.querySelector<HTMLInputElement>(
+            `input[data-filter="${group}"]`,
+          );
+          if (twin) twin.value = src.value;
+        }
+      });
+    };
+
+    const onChange = (e: Event) => {
+      mirror(e);
+      apply();
+    };
+    forms.forEach((f) => {
+      f.addEventListener("change", onChange);
+      f.addEventListener("input", onChange);
+    });
+    search?.addEventListener("input", apply);
+    sort?.addEventListener("change", apply);
+
+    document.querySelectorAll<HTMLButtonElement>("[data-clear]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        forms.forEach((f) => f.reset());
+        apply();
+      }),
+    );
+
+    // Mobile drawer
+    const drawer = document.getElementById("filters-drawer");
+    const openBtn = document.getElementById("open-filters");
+    const setDrawer = (open: boolean) => {
+      if (!drawer) return;
+      drawer.hidden = !open;
+      document.body.classList.toggle("overflow-hidden", open);
+      openBtn?.setAttribute("aria-expanded", String(open));
+    };
+    openBtn?.addEventListener("click", () => setDrawer(true));
+    document
+      .querySelectorAll("[data-close-drawer]")
+      .forEach((el) => el.addEventListener("click", () => setDrawer(false)));
+
+    apply();
+  }
+
+  // Details disclosure — one delegated listener for the whole document.
+  if (!(window as any).__csDetailsBound) {
+    (window as any).__csDetailsBound = true;
+    document.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>(
+        '[data-action="details"]',
+      );
+      if (!btn) return;
+      const panel = btn
+        .closest("[data-vehicle]")
+        ?.querySelector<HTMLElement>("[data-details]");
+      if (!panel) return;
+      panel.hidden = !panel.hidden;
+      btn.textContent = panel.hidden ? "Ver detalles" : "Ocultar";
+    });
+  }
+
+  document.addEventListener("astro:page-load", initInventory);
+</script>

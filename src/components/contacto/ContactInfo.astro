@@ -1,0 +1,47 @@
+---
+import { SITE, whatsappLink } from "@/lib/site";
+
+const wa = whatsappLink("Hola, me gustaría más información.");
+
+const rows = [
+  { label: "Teléfono", value: SITE.phone, href: `tel:${SITE.phone.replace(/\s/g, "")}` },
+  { label: "Email", value: SITE.email, href: `mailto:${SITE.email}` },
+  { label: "WhatsApp", value: "Escríbenos", href: wa, external: true },
+  { label: "Ubicación", value: SITE.address },
+  { label: "Horario", value: SITE.hours },
+];
+---
+
+<div class="space-y-6">
+  <div>
+    <h2 class="text-xl font-semibold tracking-tight">Hablemos</h2>
+    <p class="mt-2 text-sm text-muted-foreground">
+      Estamos para ayudarte a encontrar el vehículo ideal. Elige el canal que
+      prefieras.
+    </p>
+  </div>
+
+  <dl class="divide-y divide-border border-y border-border">
+    {
+      rows.map((row) => (
+        <div class="flex items-center justify-between gap-4 py-3.5">
+          <dt class="text-sm text-muted-foreground">{row.label}</dt>
+          <dd class="text-sm font-medium text-foreground">
+            {row.href ? (
+              <a
+                href={row.href}
+                target={row.external ? "_blank" : undefined}
+                rel={row.external ? "noopener" : undefined}
+                class="transition-colors hover:text-primary"
+              >
+                {row.value}
+              </a>
+            ) : (
+              row.value
+            )}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</div>

@@ -1,0 +1,56 @@
+---
+/**
+ * InventoryFilters — the toolbar above the grid: search box, sort control,
+ * live results count, and (on mobile) the button that opens the filter drawer.
+ */
+interface Props {
+  total: number;
+}
+
+const { total } = Astro.props;
+---
+
+<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <div class="flex flex-1 items-center gap-3">
+    <!-- Mobile: open drawer -->
+    <button
+      id="open-filters"
+      type="button"
+      class="inline-flex h-11 items-center gap-2 rounded-lg border border-border px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-muted lg:hidden"
+      aria-controls="filters-drawer"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="6" x2="20" y2="6"></line>
+        <line x1="7" y1="12" x2="17" y2="12"></line>
+        <line x1="10" y1="18" x2="14" y2="18"></line>
+      </svg>
+      Filtros
+    </button>
+
+    <div class="relative flex-1 sm:max-w-xs">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Buscar por marca o modelo…"
+        class="h-11 w-full rounded-lg border border-input bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+      />
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <span class="hidden text-sm text-muted-foreground sm:inline">
+      <span id="result-count">{total}</span> vehículos
+    </span>
+    <select
+      id="sort-select"
+      class="h-11 rounded-lg border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+      aria-label="Ordenar"
+    >
+      <option value="destacado">Destacados</option>
+      <option value="precio-asc">Precio: menor a mayor</option>
+      <option value="precio-desc">Precio: mayor a menor</option>
+      <option value="anio-desc">Año: más reciente</option>
+      <option value="km-asc">Menor kilometraje</option>
+    </select>
+  </div>
+</div>

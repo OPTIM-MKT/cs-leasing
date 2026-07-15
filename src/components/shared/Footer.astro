@@ -1,0 +1,79 @@
+---
+import { SITE, whatsappLink } from "@/lib/site";
+
+const year = new Date().getFullYear();
+
+const nav = [
+  { href: "/inventario", label: "Inventario" },
+  { href: "/acerca", label: "Acerca de nosotros" },
+  { href: "/contacto", label: "Contacto" },
+];
+---
+
+<footer class="border-t border-border bg-background">
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <p class="text-lg font-semibold tracking-tight">
+          C&amp;S<span class="text-primary"> Leasing</span>
+        </p>
+        <p class="mt-3 max-w-xs text-sm text-muted-foreground">
+          {SITE.tagline}. Seleccionamos cada unidad para ofrecerte confianza y
+          transparencia.
+        </p>
+      </div>
+
+      <div>
+        <p class="text-sm font-medium text-foreground">Navegación</p>
+        <ul class="mt-4 space-y-2.5">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-sm font-medium text-foreground">Contacto</p>
+        <ul class="mt-4 space-y-2.5 text-sm text-muted-foreground">
+          <li>{SITE.address}</li>
+          <li>
+            <a
+              href={`tel:${SITE.phone.replace(/\s/g, "")}`}
+              class="transition-colors hover:text-foreground">{SITE.phone}</a
+            >
+          </li>
+          <li>
+            <a
+              href={`mailto:${SITE.email}`}
+              class="transition-colors hover:text-foreground">{SITE.email}</a
+            >
+          </li>
+          <li>
+            <a
+              href={whatsappLink("Hola, me interesa conocer su inventario.")}
+              target="_blank"
+              rel="noopener"
+              class="text-primary transition-colors hover:text-foreground"
+              >WhatsApp</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 border-t border-border pt-6 text-xs text-muted-foreground"
+    >
+      © {year} C&amp;S Leasing. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import VehicleCard from "@/components/inventario/VehicleCard.astro";
+
+const featured = (await getCollection("vehicles"))
+  .filter((v) => v.data.destacado)
+  .slice(0, 3);
+---
+
+{
+  featured.length > 0 && (
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+            Destacados
+          </h2>
+          <p class="mt-2 text-muted-foreground">
+            Una selección de nuestras mejores unidades.
+          </p>
+        </div>
+        <a
+          href="/inventario"
+          class="hidden shrink-0 text-sm font-medium text-primary transition-colors hover:text-foreground sm:inline"
+        >
+          Ver todo →
+        </a>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((vehicle) => (
+          <VehicleCard vehicle={vehicle} />
+        ))}
+      </div>
+
+      <div class="mt-8 sm:hidden">
+        <a
+          href="/inventario"
+          class="text-sm font-medium text-primary transition-colors hover:text-foreground"
+        >
+          Ver todo el inventario →
+        </a>
+      </div>
+    </section>
+  )
+}

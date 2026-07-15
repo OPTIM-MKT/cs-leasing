@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from "astro:content";
+import VehicleCard from "./VehicleCard.astro";
+
+interface Props {
+  vehicles: CollectionEntry<"vehicles">[];
+}
+
+const { vehicles } = Astro.props;
+---
+
+<div>
+  <div
+    id="vehicle-grid"
+    class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+  >
+    {vehicles.map((vehicle) => <VehicleCard vehicle={vehicle} />)}
+  </div>
+
+  <!-- Empty state, revealed by the filter controller when nothing matches -->
+  <p
+    id="vehicle-empty"
+    hidden
+    class="py-16 text-center text-sm text-muted-foreground"
+  >
+    No encontramos vehículos con esos filtros. Ajusta tu búsqueda.
+  </p>
+</div>

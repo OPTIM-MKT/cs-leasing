@@ -1,0 +1,132 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import Button from "@/components/ui/Button.astro";
+import Badge from "@/components/ui/Badge.astro";
+import { currency, number, whatsappLink } from "@/lib/site";
+
+interface Props {
+  vehicle: CollectionEntry<"vehicles">;
+}
+
+const { vehicle } = Astro.props;
+const v = vehicle.data;
+
+const titulo = `${v.marca} ${v.modelo}`;
+
+// WhatsApp deep-link with the vehicle's own data pre-armed into the message.
+const waMessage = `Hola, me interesa el ${v.marca} ${v.modelo} ${v.version} ${v.año} (${currency.format(
+  v.precio,
+)}). ¿Sigue disponible?`;
+const wa = whatsappLink(waMessage);
+
+// "Lo quiero" routes to the contact form with the vehicle pre-selected.
+const quiero = `/contacto?vehiculo=${encodeURIComponent(
+  `${v.marca} ${v.modelo} ${v.version} ${v.año}`,
+)}`;
+
+// Data attributes power the client-side filter/sort/search on the grid.
+const searchIndex =
+  `${v.marca} ${v.modelo} ${v.version} ${v.año}`.toLowerCase();
+---
+
+<article
+  class="flex flex-col overflow-hidden rounded-lg border border-border bg-card"
+  data-vehicle
+  data-marca={v.marca}
+  data-transmision={v.transmision}
+  data-combustible={v.combustible}
+  data-precio={v.precio}
+  data-anio={v.año}
+  data-km={v.kilometraje}
+  data-destacado={String(v.destacado)}
+  data-search={searchIndex}
+>
+  <div class="relative aspect-[16/10] bg-muted">
+    <Image
+      src={v.foto}
+      alt={`${titulo} ${v.version}`}
+      widths={[400, 640, 800]}
+      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      class="h-full w-full object-cover"
+      loading="lazy"
+    />
+    {
+      v.destacado && (
+        <div class="absolute left-3 top-3">
+          <Badge variant="primary">Destacado</Badge>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col p-5">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <h3 class="text-base font-semibold tracking-tight">{titulo}</h3>
+        <p class="text-sm text-muted-foreground">{v.version}</p>
+      </div>
+      <p class="whitespace-nowrap text-base font-semibold text-primary">
+        {currency.format(v.precio)}
+      </p>
+    </div>
+
+    <!-- Technical spec grid -->
+    <dl
+      class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border pt-4 text-sm"
+    >
+      <div class="flex justify-between gap-2">
+        <dt class="text-muted-foreground">Año</dt>
+        <dd class="font-medium">{v.año}</dd>
+      </div>
+      <div class="flex justify-between gap-2">
+        <dt class="text-muted-foreground">Kilometraje</dt>
+        <dd class="font-medium">{number.format(v.kilometraje)} km</dd>
+      </div>
+      <div class="flex justify-between gap-2">
+        <dt class="text-muted-foreground">Transmisión</dt>
+        <dd class="font-medium">{v.transmision}</dd>
+      </div>
+      <div class="flex justify-between gap-2">
+        <dt class="text-muted-foreground">Combustible</dt>
+        <dd class="font-medium">{v.combustible}</dd>
+      </div>
+    </dl>
+
+    <!-- Collapsible details (no extra route) -->
+    <div data-details hidden class="mt-4 border-t border-border pt-4">
+      <p class="text-sm text-muted-foreground">{v.descripcion}</p>
+      {
+        v.equipamiento && v.equipamiento.length > 0 && (
+          <ul class="mt-3 flex flex-wrap gap-1.5">
+            {v.equipamiento.map((item) => (
+              <li>
+                <Badge variant="outline">{item}</Badge>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-5 flex flex-col gap-2 pt-1">
+      <div class="grid grid-cols-2 gap-2">
+        <Button variant="outline" size="sm" data-action="details" type="button">
+          Ver detalles
+        </Button>
+        <Button variant="primary" size="sm" href={quiero}>Lo quiero</Button>
+      </div>
+      <Button
+        variant="secondary"
+        size="sm"
+        href={wa}
+        target="_blank"
+        rel="noopener"
+        class="w-full"
+      >
+        WhatsApp
+      </Button>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,53 @@
+---
+/**
+ * Button — single responsibility: render a styled action as either a
+ * `<button>` or an `<a>` (when `href` is provided). No animations, no complex
+ * hover states; only a flat color change on hover per the design constraints.
+ */
+interface Props {
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  href,
+  type = "button",
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-lg font-medium whitespace-nowrap transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
+
+const variants = {
+  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+  secondary: "bg-accent text-accent-foreground hover:bg-accent/90",
+  outline:
+    "border border-border bg-background text-foreground hover:bg-muted",
+  ghost: "text-foreground hover:bg-muted",
+};
+
+const sizes = {
+  sm: "h-9 px-3 text-sm",
+  md: "h-11 px-5 text-sm",
+  lg: "h-12 px-7 text-base",
+};
+
+const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class={classes}
+  href={href}
+  type={href ? undefined : type}
+  {...rest}
+>
+  <slot />
+</Tag>

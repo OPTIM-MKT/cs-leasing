@@ -1,0 +1,44 @@
+---
+import Button from "@/components/ui/Button.astro";
+import { whatsappLink } from "@/lib/site";
+
+const wa = whatsappLink(
+  "Hola, quiero tomar a cuenta mi auto. Estos son los datos:",
+);
+---
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="grid items-center gap-8 lg:grid-cols-2">
+    <div>
+      <p class="text-sm font-medium text-primary">Toma a cuenta</p>
+      <h2 class="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+        Tu auto actual vale más de lo que crees.
+      </h2>
+      <p class="mt-4 max-w-lg text-muted-foreground">
+        Recibimos tu vehículo a cuenta del que quieres estrenar. Te damos una
+        valuación justa en minutos y aplicamos el monto directo a tu compra.
+      </p>
+    </div>
+    <div class="flex flex-col gap-4 rounded-lg border border-border p-6 sm:p-8">
+      <ol class="space-y-4">
+        {
+          [
+            "Cuéntanos los datos de tu auto.",
+            "Recibe una valuación transparente.",
+            "Aplica el monto a tu nuevo vehículo.",
+          ].map((step, i) => (
+            <li class="flex items-start gap-3">
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                {i + 1}
+              </span>
+              <span class="pt-0.5 text-sm text-foreground">{step}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <Button href={wa} target="_blank" rel="noopener" class="mt-2 w-full">
+        Solicitar valuación
+      </Button>
+    </div>
+  </div>
+</section>

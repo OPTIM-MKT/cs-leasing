@@ -1,0 +1,28 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ContactForm from "@/components/contacto/ContactForm.tsx";
+import ContactInfo from "@/components/contacto/ContactInfo.astro";
+---
+
+<Layout
+  title="Contacto — C&S Leasing"
+  description="Contáctanos por teléfono, email o WhatsApp. Te ayudamos a encontrar el vehículo seminuevo ideal."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <header class="mb-10 max-w-2xl">
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+        Contacto
+      </h1>
+      <p class="mt-2 text-muted-foreground">
+        Déjanos tus datos y te responderemos a la brevedad.
+      </p>
+    </header>
+
+    <div class="grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-16">
+      <div class="rounded-lg border border-border p-6 sm:p-8">
+        <ContactForm client:load />
+      </div>
+      <ContactInfo />
+    </div>
+  </section>
+</Layout>

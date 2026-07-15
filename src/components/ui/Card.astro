@@ -1,0 +1,19 @@
+---
+/**
+ * Card — a neutral surface container. Flat by design: a single hairline
+ * border, no shadow, no hover transform.
+ */
+interface Props {
+  class?: string;
+  as?: keyof HTMLElementTagNameMap;
+}
+
+const { class: className = "", as = "div" } = Astro.props;
+const Tag = as;
+---
+
+<Tag
+  class={`rounded-lg border border-border bg-card text-card-foreground ${className}`}
+>
+  <slot />
+</Tag>

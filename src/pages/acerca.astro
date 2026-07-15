@@ -1,0 +1,81 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import CTA from "@/components/shared/CTA.astro";
+
+const values = [
+  {
+    title: "Transparencia",
+    body: "Mostramos el historial y la condición real de cada unidad. Sin sorpresas.",
+  },
+  {
+    title: "Calidad",
+    body: "Seleccionamos pocas unidades, pero las mejores. Cantidad nunca sobre calidad.",
+  },
+  {
+    title: "Cercanía",
+    body: "Acompañamiento humano en cada paso, antes y después de la compra.",
+  },
+];
+
+const stats = [
+  { value: "+150", label: "Puntos de inspección" },
+  { value: "100%", label: "Documentación en regla" },
+  { value: "0", label: "Cargos ocultos" },
+];
+---
+
+<Layout
+  title="Acerca de — C&S Leasing"
+  description="Conoce a C&S Leasing: seleccionamos vehículos seminuevos premium con transparencia, calidad y cercanía."
+>
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+      Sobre C&amp;S Leasing
+    </h1>
+    <p class="mt-5 text-lg text-muted-foreground">
+      Nacimos con una idea simple: comprar un seminuevo debería ser tan claro y
+      tranquilo como comprar uno nuevo. Por eso seleccionamos cada vehículo a
+      mano, verificamos su historial y te lo mostramos tal como es.
+    </p>
+    <p class="mt-4 text-muted-foreground">
+      No somos un lote más. Somos un equipo que cuida cada detalle para que
+      estrenes con total confianza.
+    </p>
+  </section>
+
+  <section class="border-y border-border bg-muted">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <dl class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+        {
+          stats.map((s) => (
+            <div>
+              <dt class="text-4xl font-semibold tracking-tight text-primary">
+                {s.value}
+              </dt>
+              <dd class="mt-1 text-sm text-muted-foreground">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+      Lo que nos mueve
+    </h2>
+    <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
+      {
+        values.map((v) => (
+          <div class="rounded-lg border border-border p-6">
+            <div class="h-1 w-10 rounded-full bg-primary" />
+            <h3 class="mt-4 text-base font-semibold">{v.title}</h3>
+            <p class="mt-2 text-sm text-muted-foreground">{v.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTA />
+</Layout>

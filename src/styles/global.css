@@ -1,13 +1,106 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:where(.dark,.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
+/*
+  C&S Leasing — Design tokens.
+  Single source of truth for color. Components must consume semantic
+  utilities (bg-primary, text-foreground, border-border, ...) and never
+  hardcode hex values. Strict primary: #1EB580.
+*/
+:root {
+  --background: #ffffff;
+  --foreground: #0b1512;
 
-@theme inline {
-    --color-primary: #013383;
-    --color-secondary: #233060;
-    --color-accent: #fab702;
+  --primary: #1eb580;
+  --primary-foreground: #ffffff;
+
+  --accent: #0b1512;
+  --accent-foreground: #ffffff;
+
+  --muted: #f5f7f6;
+  --muted-foreground: #5b6660;
+
+  --card: #ffffff;
+  --card-foreground: #0b1512;
+
+  --border: #e6e9e7;
+  --input: #e6e9e7;
+  --ring: #1eb580;
+
+  --radius: 0.75rem;
 }
-    
 
+.dark {
+  --background: #0a0f0d;
+  --foreground: #f3f5f4;
+
+  --primary: #1eb580;
+  --primary-foreground: #052018;
+
+  --accent: #f3f5f4;
+  --accent-foreground: #0a0f0d;
+
+  --muted: #151b18;
+  --muted-foreground: #97a19b;
+
+  --card: #10161300;
+  --card: #101613;
+  --card-foreground: #f3f5f4;
+
+  --border: #232b27;
+  --input: #232b27;
+  --ring: #1eb580;
+}
+
+/* Map CSS variables into Tailwind's theme so semantic utilities exist. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 0.25rem);
+  --radius-sm: calc(var(--radius) - 0.5rem);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family:
+      ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+      Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--primary) 22%, transparent);
+  }
+}

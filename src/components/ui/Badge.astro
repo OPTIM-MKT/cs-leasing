@@ -1,0 +1,23 @@
+---
+/**
+ * Badge — a small, non-interactive label (e.g. "Destacado", fuel type).
+ */
+interface Props {
+  variant?: "primary" | "muted" | "outline";
+  class?: string;
+}
+
+const { variant = "muted", class: className = "" } = Astro.props;
+
+const variants = {
+  primary: "bg-primary text-primary-foreground",
+  muted: "bg-muted text-muted-foreground",
+  outline: "border border-border text-foreground",
+};
+---
+
+<span
+  class={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${variants[variant]} ${className}`}
+>
+  <slot />
+</span>

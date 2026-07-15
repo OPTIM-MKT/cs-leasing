@@ -1,0 +1,37 @@
+---
+import Button from "@/components/ui/Button.astro";
+import { whatsappLink } from "@/lib/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "¿Listo para estrenar?",
+  description = "Agenda una cita o escríbenos por WhatsApp. Te ayudamos a encontrar el vehículo ideal, sin presiones.",
+} = Astro.props;
+
+const wa = whatsappLink("Hola, me gustaría agendar una cita.");
+---
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div
+    class="rounded-lg border border-border bg-muted px-6 py-12 text-center sm:px-12"
+  >
+    <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+      {title}
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-muted-foreground">
+      {description}
+    </p>
+    <div
+      class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+    >
+      <Button href="/contacto" size="lg">Contáctanos</Button>
+      <Button href={wa} variant="outline" size="lg" target="_blank" rel="noopener">
+        WhatsApp
+      </Button>
+    </div>
+  </div>
+</section>
