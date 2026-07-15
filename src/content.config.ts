@@ -2,11 +2,6 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "zod";
 
-/**
- * `vehicles` — the single source of truth for the inventory.
- * Nothing about a vehicle should ever be hardcoded in a component; it all
- * flows from these entries through `getCollection("vehicles")`.
- */
 const vehicles = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/vehicles" }),
   schema: ({ image }) =>
@@ -24,8 +19,12 @@ const vehicles = defineCollection({
       descripcion: z.string(),
       destacado: z.boolean().default(false),
 
-      // Optional, forward-looking fields for the vehicle detail experience.
+      // Optional fields for vehicle detail page.
+      // galeria: array of local images processed by Astro.
       galeria: z.array(image()).optional(),
+      // galeriaFolder: name of a folder inside src/assets/images/gal/ for
+      // the Gallery component (alternative to inline galeria array).
+      galeriaFolder: z.string().optional(),
       equipamiento: z.array(z.string()).optional(),
     }),
 });

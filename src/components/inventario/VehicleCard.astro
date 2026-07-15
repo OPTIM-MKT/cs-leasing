@@ -13,6 +13,7 @@ const { vehicle } = Astro.props;
 const v = vehicle.data;
 
 const titulo = `${v.marca} ${v.modelo}`;
+const detailHref = `/inventario/${v.slug}`;
 
 // WhatsApp deep-link with the vehicle's own data pre-armed into the message.
 const waMessage = `Hola, me interesa el ${v.marca} ${v.modelo} ${v.version} ${v.año} (${currency.format(
@@ -28,6 +29,10 @@ const quiero = `/contacto?vehiculo=${encodeURIComponent(
 // Data attributes power the client-side filter/sort/search on the grid.
 const searchIndex =
   `${v.marca} ${v.modelo} ${v.version} ${v.año}`.toLowerCase();
+
+// View transition names scoped to slug so multiple cards don't clash.
+const transitionImage = `vehicle-img-${v.slug}`;
+const transitionTitle = `vehicle-title-${v.slug}`;
 ---
 
 <article
@@ -42,14 +47,15 @@ const searchIndex =
   data-destacado={String(v.destacado)}
   data-search={searchIndex}
 >
-  <div class="relative aspect-[16/10] bg-muted">
+  <a href={detailHref} class="relative block aspect-[16/10] bg-muted overflow-hidden">
     <Image
       src={v.foto}
       alt={`${titulo} ${v.version}`}
       widths={[400, 640, 800]}
       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-      class="h-full w-full object-cover"
+      class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
       loading="lazy"
+      transition:name={transitionImage}
     />
     {
       v.destacado && (
@@ -58,12 +64,19 @@ const searchIndex =
         </div>
       )
     }
-  </div>
+  </a>
 
   <div class="flex flex-1 flex-col p-5">
     <div class="flex items-start justify-between gap-3">
       <div>
-        <h3 class="text-base font-semibold tracking-tight">{titulo}</h3>
+        <a href={detailHref}>
+          <h3
+            class="text-base font-semibold tracking-tight hover:text-primary transition-colors"
+            transition:name={transitionTitle}
+          >
+            {titulo}
+          </h3>
+        </a>
         <p class="text-sm text-muted-foreground">{v.version}</p>
       </div>
       <p class="whitespace-nowrap text-base font-semibold text-primary">
@@ -93,7 +106,7 @@ const searchIndex =
       </div>
     </dl>
 
-    <!-- Collapsible details (no extra route) -->
+    <!-- Collapsible quick-details (no extra route) -->
     <div data-details hidden class="mt-4 border-t border-border pt-4">
       <p class="text-sm text-muted-foreground">{v.descripcion}</p>
       {
@@ -115,7 +128,7 @@ const searchIndex =
         <Button variant="outline" size="sm" data-action="details" type="button">
           Ver detalles
         </Button>
-        <Button variant="primary" size="sm" href={quiero}>Lo quiero</Button>
+        <Button variant="primary" size="sm" href={detailHref}>Ver ficha</Button>
       </div>
       <Button
         variant="secondary"

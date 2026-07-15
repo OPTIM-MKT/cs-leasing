@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import Button from "@/components/ui/Button.astro";
 import { whatsappLink } from "@/lib/site";
+import carBg from "@/assets/car.webp";
 
 interface Props {
   title?: string;
@@ -9,29 +11,55 @@ interface Props {
 
 const {
   title = "¿Listo para estrenar?",
-  description = "Agenda una cita o escríbenos por WhatsApp. Te ayudamos a encontrar el vehículo ideal, sin presiones.",
+  description =
+    "Agenda una cita o escríbenos por WhatsApp. Te ayudamos a encontrar el vehículo ideal, sin presiones.",
 } = Astro.props;
 
-const wa = whatsappLink("Hola, me gustaría agendar una cita.");
+const wa = whatsappLink("Hola, me gustaría agendar una cita para ver su inventario.");
 ---
 
 <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-  <div
-    class="rounded-lg border border-border bg-muted px-6 py-12 text-center sm:px-12"
-  >
-    <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">
-      {title}
-    </h2>
-    <p class="mx-auto mt-3 max-w-xl text-muted-foreground">
-      {description}
-    </p>
-    <div
-      class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
-    >
-      <Button href="/contacto" size="lg">Contáctanos</Button>
-      <Button href={wa} variant="outline" size="lg" target="_blank" rel="noopener">
-        WhatsApp
-      </Button>
+  <div class="relative overflow-hidden rounded-2xl">
+    <!-- Background image -->
+    <Image
+      src={carBg}
+      alt="Vehículo premium C&S Leasing"
+      class="absolute inset-0 h-full w-full object-cover"
+      widths={[800, 1200, 1600]}
+      sizes="(min-width: 1280px) 1200px, 100vw"
+      loading="lazy"
+    />
+    <!-- Dark overlay for readability -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+
+    <!-- Content -->
+    <div class="relative px-8 py-16 sm:px-14 sm:py-20">
+      <h2 class="max-w-xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        {title}
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-base text-white/80 sm:max-w-none sm:text-lg">
+        {description}
+      </p>
+      <div
+        class="mt-8 flex flex-col items-start gap-3 sm:flex-row"
+      >
+        <Button href="/contacto" size="lg" class="bg-primary hover:bg-primary/90 text-white border-0">
+          Contáctanos
+        </Button>
+        <Button
+          href={wa}
+          variant="outline"
+          size="lg"
+          target="_blank"
+          rel="noopener"
+          class="border-white/40 text-white hover:bg-white/10 bg-white/10 backdrop-blur"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"></path>
+          </svg>
+          WhatsApp
+        </Button>
+      </div>
     </div>
   </div>
 </section>
