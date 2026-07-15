@@ -16,7 +16,9 @@ const {
   description = "Compra vehículos seminuevos premium con total confianza. Inventario seleccionado, precios claros y atención directa.",
 } = Astro.props;
 
-const wa = whatsappLink("Hola, me interesa conocer su inventario de vehículos.");
+const wa = whatsappLink(
+  "Hola, me interesa conocer su inventario de vehículos.",
+);
 ---
 
 <!doctype html>
@@ -43,7 +45,9 @@ const wa = whatsappLink("Hola, me interesa conocer su inventario de vehículos."
       (function () {
         try {
           var stored = localStorage.getItem("theme");
-          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
           if (stored === "dark" || (!stored && prefersDark)) {
             document.documentElement.classList.add("dark");
           } else {
@@ -61,7 +65,7 @@ const wa = whatsappLink("Hola, me interesa conocer su inventario de vehículos."
     <Footer />
 
     <!-- Global floating WhatsApp button — top right corner -->
-    <a
+    <!-- <a
       href={wa}
       target="_blank"
       rel="noopener noreferrer"
@@ -82,6 +86,6 @@ const wa = whatsappLink("Hola, me interesa conocer su inventario de vehículos."
         ></path>
       </svg>
       <span class="hidden text-sm font-semibold sm:inline">WhatsApp</span>
-    </a>
+    </a> -->
   </body>
 </html>

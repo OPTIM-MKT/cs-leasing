@@ -19,12 +19,8 @@ const vehicles = defineCollection({
       descripcion: z.string(),
       destacado: z.boolean().default(false),
 
-      // Optional fields for vehicle detail page.
-      // galeria: array of local images processed by Astro.
-      galeria: z.array(image()).optional(),
-      // galeriaFolder: name of a folder inside src/assets/images/gal/ for
-      // the Gallery component (alternative to inline galeria array).
-      galeriaFolder: z.string().optional(),
+      // Optional: folder name inside src/assets/images/gal/ for the Gallery component.
+      galeria: z.string().optional(),
       equipamiento: z.array(z.string()).optional(),
     }),
 });

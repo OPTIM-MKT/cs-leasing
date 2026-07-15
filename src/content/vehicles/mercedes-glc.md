@@ -20,9 +20,7 @@ equipamiento:
   - Asientos con calefacción y ventilación
   - Burmester Surround Sound 13 bocinas
   - Control de crucero adaptativo DISTRONIC
-galeria:
-  - ../../assets/car.webp
-  - ../../assets/car.webp
+galeria: one
 ---
 
 El **Mercedes-Benz GLC 300 4MATIC AMG Line 2022** representa la cúspide del segmento de SUV premium medianos. Con su línea AMG que combina deportividad y elegancia, este vehículo comunica estatus y confianza en cada kilómetro recorrido.

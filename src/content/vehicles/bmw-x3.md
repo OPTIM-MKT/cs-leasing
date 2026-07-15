@@ -20,10 +20,9 @@ equipamiento:
   - Live Cockpit Professional
   - Parking Assistant Plus
   - Driving Assistant Professional
-galeria:
-  - ../../assets/car.webp
-  - ../../assets/car.webp
+galeria: one
 ---
+
 
 El **BMW X3 xDrive30i M Sport 2023** define el estándar del segmento premium deportivo. Con apenas 24,500 km recorridos y garantía de fábrica vigente, representa una oportunidad excepcional para quienes exigen lo mejor sin compromisos.
 

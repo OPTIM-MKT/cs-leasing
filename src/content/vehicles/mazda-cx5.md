@@ -20,9 +20,7 @@ equipamiento:
   - Apple CarPlay / Android Auto
   - Control de crucero adaptativo
   - Sistema i-Activsense de seguridad
-galeria:
-  - ../../assets/car.webp
-  - ../../assets/car.webp
+galeria: one
 ---
 
 El **Mazda CX-5 i Grand Touring 2021** encarna la filosofía KODO — "Alma del movimiento" — tanto en su diseño exterior como en la calidad de su interior. Este vehículo combina refinamiento europeo con la reconocida fiabilidad japonesa, haciendo de él la opción más inteligente en su segmento.

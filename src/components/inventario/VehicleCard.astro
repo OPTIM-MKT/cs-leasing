@@ -15,28 +15,33 @@ const v = vehicle.data;
 const titulo = `${v.marca} ${v.modelo}`;
 const detailHref = `/inventario/${v.slug}`;
 
-// WhatsApp deep-link with the vehicle's own data pre-armed into the message.
-const waMessage = `Hola, me interesa el ${v.marca} ${v.modelo} ${v.version} ${v.año} (${currency.format(
-  v.precio,
-)}). ¿Sigue disponible?`;
+const waMessage = `Hola, me interesa el ${v.marca} ${v.modelo} ${v.version} ${v.año} (${currency.format(v.precio)}). ¿Sigue disponible?`;
 const wa = whatsappLink(waMessage);
 
-// "Lo quiero" routes to the contact form with the vehicle pre-selected.
-const quiero = `/contacto?vehiculo=${encodeURIComponent(
-  `${v.marca} ${v.modelo} ${v.version} ${v.año}`,
-)}`;
+const quiero = `/contacto?vehiculo=${encodeURIComponent(`${v.marca} ${v.modelo} ${v.version} ${v.año}`)}`;
 
-// Data attributes power the client-side filter/sort/search on the grid.
 const searchIndex =
   `${v.marca} ${v.modelo} ${v.version} ${v.año}`.toLowerCase();
 
-// View transition names scoped to slug so multiple cards don't clash.
 const transitionImage = `vehicle-img-${v.slug}`;
 const transitionTitle = `vehicle-title-${v.slug}`;
+
+// Icon SVGs for each spec pill
+const iconCalendar = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+const iconOdo = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+const iconGear = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>`;
+const iconFuel = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 22V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M3 22h10"/><path d="M17 22V9.5a2.5 2.5 0 0 0-2.5-2.5"/><line x1="13" y1="10" x2="17" y2="10"/><rect x="17" y="10" width="4" height="6" rx="1"/></svg>`;
+
+const specs = [
+  { icon: iconCalendar, value: String(v.año) },
+  { icon: iconOdo, value: `${number.format(v.kilometraje)} km` },
+  { icon: iconGear, value: v.transmision },
+  { icon: iconFuel, value: v.combustible },
+];
 ---
 
 <article
-  class="flex flex-col overflow-hidden rounded-lg border border-border bg-card"
+  class="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-lg"
   data-vehicle
   data-marca={v.marca}
   data-transmision={v.transmision}
@@ -47,13 +52,18 @@ const transitionTitle = `vehicle-title-${v.slug}`;
   data-destacado={String(v.destacado)}
   data-search={searchIndex}
 >
-  <a href={detailHref} class="relative block aspect-[16/10] bg-muted overflow-hidden">
+  <!-- Image -->
+  <a
+    href={detailHref}
+    class="relative block overflow-hidden bg-muted"
+    style="aspect-ratio:16/10"
+  >
     <Image
       src={v.foto}
       alt={`${titulo} ${v.version}`}
       widths={[400, 640, 800]}
       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-      class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       loading="lazy"
       transition:name={transitionImage}
     />
@@ -64,51 +74,51 @@ const transitionTitle = `vehicle-title-${v.slug}`;
         </div>
       )
     }
+    <!-- Hover overlay with Ver ficha label -->
+    <!-- <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/30">
+      <span class="translate-y-2 rounded-full bg-white/90 px-4 py-1.5 text-xs font-semibold text-foreground opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        Ver ficha →
+      </span>
+    </div> -->
   </a>
 
-  <div class="flex flex-1 flex-col p-5">
-    <div class="flex items-start justify-between gap-3">
-      <div>
+  <!-- Body -->
+  <div class="flex flex-1 flex-col gap-4 p-4">
+    <!-- Title + price row -->
+    <div class="flex items-start justify-between gap-2">
+      <div class="min-w-0">
         <a href={detailHref}>
           <h3
-            class="text-base font-semibold tracking-tight hover:text-primary transition-colors"
+            class="truncate text-base font-semibold tracking-tight transition-colors hover:text-primary"
             transition:name={transitionTitle}
           >
             {titulo}
           </h3>
         </a>
-        <p class="text-sm text-muted-foreground">{v.version}</p>
+        <p class="mt-0.5 truncate text-sm text-muted-foreground">{v.version}</p>
       </div>
-      <p class="whitespace-nowrap text-base font-semibold text-primary">
+      <p class="shrink-0 text-base font-bold text-primary">
         {currency.format(v.precio)}
       </p>
     </div>
 
-    <!-- Technical spec grid -->
-    <dl
-      class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border pt-4 text-sm"
-    >
-      <div class="flex justify-between gap-2">
-        <dt class="text-muted-foreground">Año</dt>
-        <dd class="font-medium">{v.año}</dd>
-      </div>
-      <div class="flex justify-between gap-2">
-        <dt class="text-muted-foreground">Kilometraje</dt>
-        <dd class="font-medium">{number.format(v.kilometraje)} km</dd>
-      </div>
-      <div class="flex justify-between gap-2">
-        <dt class="text-muted-foreground">Transmisión</dt>
-        <dd class="font-medium">{v.transmision}</dd>
-      </div>
-      <div class="flex justify-between gap-2">
-        <dt class="text-muted-foreground">Combustible</dt>
-        <dd class="font-medium">{v.combustible}</dd>
-      </div>
-    </dl>
+    <!-- Spec pills — 2×2 grid, no labels, just icon + value -->
+    <ul class="grid grid-cols-2 gap-2">
+      {
+        specs.map((s) => (
+          <li class="flex items-center gap-1.5 rounded-lg bg-muted px-2.5 py-1.5 text-xs text-muted-foreground">
+            <span class="shrink-0 text-primary" set:html={s.icon} />
+            <span class="truncate font-medium">{s.value}</span>
+          </li>
+        ))
+      }
+    </ul>
 
-    <!-- Collapsible quick-details (no extra route) -->
-    <div data-details hidden class="mt-4 border-t border-border pt-4">
-      <p class="text-sm text-muted-foreground">{v.descripcion}</p>
+    <!-- Collapsible description -->
+    <div data-details hidden class="border-t border-border pt-3">
+      <p class="text-sm leading-relaxed text-muted-foreground">
+        {v.descripcion}
+      </p>
       {
         v.equipamiento && v.equipamiento.length > 0 && (
           <ul class="mt-3 flex flex-wrap gap-1.5">
@@ -122,24 +132,43 @@ const transitionTitle = `vehicle-title-${v.slug}`;
       }
     </div>
 
-    <!-- Actions -->
-    <div class="mt-5 flex flex-col gap-2 pt-1">
+    <!-- Action buttons -->
+    <div class="mt-auto flex flex-col gap-2">
       <div class="grid grid-cols-2 gap-2">
-        <Button variant="outline" size="sm" data-action="details" type="button">
+        <!-- <button
+          type="button"
+          data-action="details"
+          class="inline-flex h-9 items-center justify-center rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
           Ver detalles
-        </Button>
-        <Button variant="primary" size="sm" href={detailHref}>Ver ficha</Button>
+        </button> -->
+        <a
+          href={detailHref}
+          class="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Ver ficha
+        </a>
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-[#25D366] text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            class="shrink-0"
+          >
+            <path
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"
+            ></path>
+          </svg>
+          WhatsApp
+        </a>
       </div>
-      <Button
-        variant="secondary"
-        size="sm"
-        href={wa}
-        target="_blank"
-        rel="noopener"
-        class="w-full"
-      >
-        WhatsApp
-      </Button>
     </div>
   </div>
 </article>

@@ -6,21 +6,36 @@ const values = [
   {
     title: "Transparencia",
     body: "Mostramos el historial y la condición real de cada unidad. Sin sorpresas.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
   },
   {
     title: "Calidad",
     body: "Seleccionamos pocas unidades, pero las mejores. Cantidad nunca sobre calidad.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
   },
   {
     title: "Cercanía",
     body: "Acompañamiento humano en cada paso, antes y después de la compra.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   },
 ];
 
 const stats = [
-  { value: "+150", label: "Puntos de inspección" },
-  { value: "100%", label: "Documentación en regla" },
-  { value: "0", label: "Cargos ocultos" },
+  {
+    value: "+150",
+    label: "Puntos de inspección",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+  },
+  {
+    value: "100%",
+    label: "Documentación en regla",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>`,
+  },
+  {
+    value: "0",
+    label: "Cargos ocultos",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>`,
+  },
 ];
 ---
 
@@ -43,16 +58,22 @@ const stats = [
     </p>
   </section>
 
+  <!-- Stats section with icons -->
   <section class="border-y border-border bg-muted">
     <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
       <dl class="grid grid-cols-1 gap-8 sm:grid-cols-3">
         {
           stats.map((s) => (
-            <div>
-              <dt class="text-4xl font-semibold tracking-tight text-primary">
-                {s.value}
-              </dt>
-              <dd class="mt-1 text-sm text-muted-foreground">{s.label}</dd>
+            <div class="flex items-start gap-4">
+              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Fragment set:html={s.icon} />
+              </div>
+              <div>
+                <dt class="text-4xl font-bold tracking-tight text-primary">
+                  {s.value}
+                </dt>
+                <dd class="mt-1 text-sm text-muted-foreground">{s.label}</dd>
+              </div>
             </div>
           ))
         }
@@ -60,17 +81,23 @@ const stats = [
     </div>
   </section>
 
+  <!-- Values section with icons -->
   <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">
       Lo que nos mueve
     </h2>
-    <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
+    <p class="mt-3 text-muted-foreground">
+      Tres principios que guían cada decisión que tomamos.
+    </p>
+    <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
       {
         values.map((v) => (
-          <div class="rounded-lg border border-border p-6">
-            <div class="h-1 w-10 rounded-full bg-primary" />
-            <h3 class="mt-4 text-base font-semibold">{v.title}</h3>
-            <p class="mt-2 text-sm text-muted-foreground">{v.body}</p>
+          <div class="rounded-xl border border-border p-6 transition-shadow hover:shadow-md">
+            <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Fragment set:html={v.icon} />
+            </div>
+            <h3 class="mt-5 text-base font-semibold">{v.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{v.body}</p>
           </div>
         ))
       }

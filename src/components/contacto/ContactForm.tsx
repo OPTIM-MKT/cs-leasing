@@ -91,7 +91,10 @@ export default function ContactForm() {
       />
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="mensaje" className="text-sm font-medium text-foreground">
+        <label
+          htmlFor="mensaje"
+          className="text-sm font-medium text-foreground"
+        >
           Mensaje
         </label>
         <textarea
@@ -112,7 +115,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors duration-150 hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-60"
+        className="cursor-pointer inline-flex h-11 w-full items-center justify-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors duration-150 hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-60"
       >
         {isSubmitting ? "Enviando…" : "Enviar mensaje"}
       </button>

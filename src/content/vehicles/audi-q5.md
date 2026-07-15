@@ -20,9 +20,7 @@ equipamiento:
   - Bang & Olufsen Audio
   - Sensores de estacionamiento
   - Faros Matrix LED
-galeria:
-  - ../../assets/car.webp
-  - ../../assets/car.webp
+galeria: one
 ---
 
 El **Audi Q5 2.0T Quattro S line 2022** es la expresión perfecta del lujo utilitario alemán. Equipado con el paquete deportivo S line que aporta difusores en carbono, rines de 20" en diseño de 5 brazos en Y y molduras exteriores en negro brillante, este ejemplar se distingue a primera vista.

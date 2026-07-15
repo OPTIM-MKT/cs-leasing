@@ -104,59 +104,41 @@ const wa = whatsappLink("Hola, me gustaría más información sobre sus vehícul
         </ul>
       </div>
 
-      <!-- Offices col 1 (MTY + CDMX) -->
+      <!-- Monterrey office only -->
       <div>
-        <p class="text-sm font-semibold text-foreground">Oficinas</p>
-        <ul class="mt-4 space-y-5">
-          {
-            OFFICES.slice(0, 2).map((office) => (
-              <li class="text-sm text-muted-foreground">
-                <p class="font-medium text-foreground">{office.city}</p>
-                <p class="mt-0.5 leading-relaxed">{office.address}</p>
-                <a
-                  href={`tel:${office.phone.replace(/\s/g, "")}`}
-                  class="mt-1 block transition-colors hover:text-foreground"
-                >
-                  {office.phone}
-                </a>
-                <a
-                  href={`mailto:${office.email}`}
-                  class="block transition-colors hover:text-foreground"
-                >
-                  {office.email}
-                </a>
-              </li>
-            ))
-          }
+        <p class="text-sm font-semibold text-foreground">Oficina</p>
+        <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+          <li class="font-medium text-foreground">{OFFICES[0].city}</li>
+          <li class="leading-relaxed">{OFFICES[0].address}</li>
+          <li>
+            <a
+              href={`tel:${OFFICES[0].phone.replace(/\s/g, "")}`}
+              class="transition-colors hover:text-foreground"
+            >
+              📞 Llamar
+            </a>
+          </li>
+          <li>
+            <a
+              href={`mailto:${OFFICES[0].email}`}
+              class="transition-colors hover:text-foreground"
+            >
+              ✉ {OFFICES[0].email}
+            </a>
+          </li>
+          <li>
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[#25D366] transition-colors hover:text-foreground"
+            >
+              💬 WhatsApp
+            </a>
+          </li>
         </ul>
       </div>
 
-      <!-- Offices col 2 (León + SLP) -->
-      <div>
-        <p class="text-sm font-semibold text-foreground invisible hidden lg:block">Oficinas</p>
-        <ul class="mt-4 space-y-5 lg:mt-4">
-          {
-            OFFICES.slice(2).map((office) => (
-              <li class="text-sm text-muted-foreground">
-                <p class="font-medium text-foreground">{office.city}</p>
-                <p class="mt-0.5 leading-relaxed">{office.address}</p>
-                <a
-                  href={`tel:${office.phone.replace(/\s/g, "")}`}
-                  class="mt-1 block transition-colors hover:text-foreground"
-                >
-                  {office.phone}
-                </a>
-                <a
-                  href={`mailto:${office.email}`}
-                  class="block transition-colors hover:text-foreground"
-                >
-                  {office.email}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
 
     </div>
 

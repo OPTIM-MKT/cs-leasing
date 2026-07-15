@@ -20,9 +20,7 @@ equipamiento:
   - Monitor de punto ciego
   - Sistema JBL Premium 9 bocinas
   - Cargador inalámbrico Qi
-galeria:
-  - ../../assets/car.webp
-  - ../../assets/car.webp
+galeria: one
 ---
 
 El **Toyota RAV4 XLE Hybrid AWD 2023** es la respuesta definitiva para quienes quieren lo mejor de dos mundos: la eficiencia de un híbrido y la capacidad todoterreno de un AWD. Con apenas 18,700 km, este ejemplar está prácticamente en condición de nuevo.
