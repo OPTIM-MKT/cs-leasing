@@ -42,7 +42,7 @@ const wa = whatsappLink(
     <ClientRouter />
     <!-- Theme persistence: runs before paint to avoid flash -->
     <script is:inline>
-      (function () {
+      const setTheme = () => {
         try {
           var stored = localStorage.getItem("theme");
           var prefersDark = window.matchMedia(
@@ -54,7 +54,9 @@ const wa = whatsappLink(
             document.documentElement.classList.remove("dark");
           }
         } catch (_) {}
-      })();
+      };
+      setTheme();
+      document.addEventListener("astro:after-swap", setTheme);
     </script>
   </head>
   <body class="flex min-h-screen flex-col bg-background text-foreground">
