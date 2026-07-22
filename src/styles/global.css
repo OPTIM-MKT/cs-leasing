@@ -104,3 +104,71 @@
     background-color: color-mix(in srgb, var(--primary) 22%, transparent);
   }
 }
+
+/* Swiper Pagination custom styles */
+.swiper-pagination {
+  bottom: 28px !important;
+}
+
+.swiper-pagination-bullet {
+  background: #ffffff !important;
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  margin: 0 8px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--primary) !important;
+  opacity: 1;
+  width: 36px;
+}
+
+/* Swiper Side Navigation Arrows custom styles */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important; /* Hidden on mobile/tablet (below 768px) */
+}
+
+@media (min-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: flex !important; /* Visible on screens md and up */
+    align-items: center;
+    justify-content: center;
+    color: var(--primary) !important;
+    background: color-mix(in srgb, var(--primary) 12%, transparent) !important;
+    backdrop-filter: blur(8px);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid var(--primary) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    background: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+    border-color: var(--primary) !important;
+    transform: scale(1.06);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+
+  .swiper-button-next::after {
+    font-size: 16px !important;
+    font-weight: bold;
+    margin-left: 2px; /* Centers the right chevron glyph */
+  }
+
+  .swiper-button-prev::after {
+    font-size: 16px !important;
+    font-weight: bold;
+    margin-right: 2px; /* Centers the left chevron glyph */
+  }
+}
+
+

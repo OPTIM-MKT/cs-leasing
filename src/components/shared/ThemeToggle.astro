@@ -56,28 +56,37 @@
 <script>
   function syncIcons() {
     const isDark = document.documentElement.classList.contains("dark");
-    document.querySelectorAll<HTMLElement>("[data-icon-moon]").forEach((el) => {
-      el.style.display = isDark ? "none" : "";
+    document.querySelectorAll("[data-icon-moon]").forEach((el) => {
+      (el as HTMLElement).style.display = isDark ? "none" : "";
     });
-    document.querySelectorAll<HTMLElement>("[data-icon-sun]").forEach((el) => {
-      el.style.display = isDark ? "" : "none";
+    document.querySelectorAll("[data-icon-sun]").forEach((el) => {
+      (el as HTMLElement).style.display = isDark ? "" : "none";
     });
   }
 
-  // Sync icons on every page load (view transitions included).
-  document.addEventListener("astro:page-load", syncIcons);
-
-  // Toggle handler — delegated so it survives view transitions.
-  if (!(window as any).__themeToggleBound) {
+  // Setup click handler using event delegation
+  function setupThemeToggle() {
+    syncIcons();
+    
+    // Evitar múltiples bindings
+    if ((window as any).__themeToggleBound) return;
     (window as any).__themeToggleBound = true;
+
     document.addEventListener("click", (e) => {
-      const btn = (e.target as Element)?.closest("[data-theme-toggle]");
+      const target = e.target as HTMLElement;
+      const btn = target.closest("[data-theme-toggle]");
       if (!btn) return;
+      
       const isDark = document.documentElement.classList.toggle("dark");
       try {
         localStorage.setItem("theme", isDark ? "dark" : "light");
-      } catch (_) {}
+      } catch (err) {}
+      
       syncIcons();
     });
   }
+
+  // Ejecutar en la carga inicial y en navegaciones de View Transitions
+  setupThemeToggle();
+  document.addEventListener("astro:page-load", setupThemeToggle);
 </script>
