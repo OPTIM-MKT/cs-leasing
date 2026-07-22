@@ -8,7 +8,7 @@
   type="button"
   data-theme-toggle
   aria-label="Cambiar tema de color"
-  class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+  class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
 >
   <!-- Moon icon — shown in light mode -->
   <svg
@@ -64,29 +64,26 @@
     });
   }
 
-  // Setup click handler using event delegation
   function setupThemeToggle() {
     syncIcons();
     
-    // Evitar múltiples bindings
-    if ((window as any).__themeToggleBound) return;
-    (window as any).__themeToggleBound = true;
+    const buttons = document.querySelectorAll("[data-theme-toggle]");
+    buttons.forEach((btn) => {
+      // Evitar doble binding en el mismo elemento
+      if (btn.getAttribute("data-processed") === "true") return;
+      btn.setAttribute("data-processed", "true");
 
-    document.addEventListener("click", (e) => {
-      const target = e.target as HTMLElement;
-      const btn = target.closest("[data-theme-toggle]");
-      if (!btn) return;
-      
-      const isDark = document.documentElement.classList.toggle("dark");
-      try {
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      } catch (err) {}
-      
-      syncIcons();
+      btn.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.toggle("dark");
+        try {
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        } catch (err) {}
+        syncIcons();
+      });
     });
   }
 
-  // Ejecutar en la carga inicial y en navegaciones de View Transitions
+  // Ejecutar en carga inicial y navegaciones
   setupThemeToggle();
   document.addEventListener("astro:page-load", setupThemeToggle);
 </script>
