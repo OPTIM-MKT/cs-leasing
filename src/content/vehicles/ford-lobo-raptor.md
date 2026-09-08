@@ -11,7 +11,7 @@ combustible: Gasolina
 slug: ford-lobo-raptor
 descripcion: Ford Lobo Raptor 2018. El ícono indiscutible del off-road de alto rendimiento. Motor V6 EcoBoost, suspensión de carreras y tracción 4x4 extrema.
 destacado: true
-disponible: true
+disponible: false
 equipamiento:
   - Motor V6 3.5L EcoBoost High Output
   - Tracción 4x4 avanzada
